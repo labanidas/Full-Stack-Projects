@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore';
-import { Eye, EyeOff, Lock, Mail, MessageSquare, User } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from 'lucide-react';
 import { Link } from "react-router-dom";
 import AuthImagePattern from '../components/AuthImagePattern';
+import toast from 'react-hot-toast';
 
 const SignUpPage = () => {
 
@@ -16,6 +17,12 @@ const SignUpPage = () => {
   const { signup, isSigningUp } = useAuthStore();
 
   const validateForm = () => {
+    if (!formData.fullName.trim()) return toast.error("Full name is required");
+    if (!formData.email.trim()) return toast.error("Email is required");
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
+    if (!formData.password) return toast.error("Password is required");
+    if (formData.password.length < 6) return toast.error("Password must be at least 6 characters");
+
     return true;
   }
 
@@ -44,7 +51,7 @@ const SignUpPage = () => {
           </div>
 
           {/* form */}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className='space-y-6'>
 
             <div className="form-control">
               <label className="label">
@@ -103,29 +110,40 @@ const SignUpPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  { showPassword ? (
+                  {showPassword ? (
                     <EyeOff className='size-5 text-base-content/40' />
                   ) : (
-                    <Eye className='size-5 text-base-content/40'/>
+                    <Eye className='size-5 text-base-content/40' />
                   )}
                 </button>
               </div>
             </div>
+
+            <button
+              type='submit'
+              className="btn btn-primary w-full"
+              disabled={isSigningUp}
+            >
+              {isSigningUp ? (<Loader2 className='size-5 animate-spin' />) : (
+                "create Account"
+              )}
+
+            </button>
           </form>
 
           <div className="text-center">
             <div className="text-base-content/60">
-                Already have an account? {" "}
-                <Link to="/login" className='link line-primary'>
+              Already have an account? {" "}
+              <Link to="/login" className='link line-primary'>
                 Sign in
-                </Link>
+              </Link>
             </div>
           </div>
 
         </div>
       </div>
-        
-      <AuthImagePattern 
+
+      <AuthImagePattern
         title="Join our community"
         subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
       />
