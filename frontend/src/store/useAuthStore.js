@@ -1,5 +1,5 @@
 import { create } from "zustand"; // state management 
-import { axiosInstance } from "../lib/axios";
+import { axiosInstance } from "../lib/axios.js";
 
 
 export const useAuthStore = create((set) =>({
@@ -20,6 +20,6 @@ export const useAuthStore = create((set) =>({
         }finally{
          set({isCheckingAuth: false})   ;
         }
-    }
+    },
 
 }))
