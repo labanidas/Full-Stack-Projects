@@ -1,10 +1,10 @@
-import ChatCOntainer from "../components/ChatCOntainer";
+import ChatContainer from "../components/ChatCOntainer";
 import NoChatSelected from "../components/NoChatSelected";
 import Sidedbar from "../components/Sidedbar";
 import { useChatStore } from "../store/useChatStore"
 
 const HomePage = () => {
-  const {setlectedUser} = useChatStore();
+  const { selectedUser } = useChatStore();
 
   return (
     <div className="h-screen bg-base-200">
@@ -14,7 +14,7 @@ const HomePage = () => {
             {/* sidebar */}
             <Sidedbar />
 
-            {!setlectedUser ? <NoChatSelected /> : <ChatCOntainer />}
+            {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
 
           </div>
         </div>
