@@ -10,12 +10,16 @@ import { useAuthStore } from "../store/useAuthStore.js";
 
 
 const ChatContainer = () => {
-  const { messages, getMessages, selectedUser, isMessagesLoading } = useChatStore();
+  const { messages, getMessages, selectedUser, isMessagesLoading, subscribeToMessages, unSubscribeFromMessages } = useChatStore();
   const {authUser} = useAuthStore();
 
   useEffect(() => {
-    getMessages(selectedUser._id)
-  }, [selectedUser, getMessages])
+    getMessages(selectedUser._id);
+    subscribeToMessages();
+
+    return () => unSubscribeFromMessages();
+
+  }, [selectedUser, getMessages, subscribeToMessages, unSubscribeFromMessages])
 
   if (isMessagesLoading) return (
     <div className="flex-1 flex flex-col overflow-auto">
